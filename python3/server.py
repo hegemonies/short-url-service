@@ -3,10 +3,11 @@ from flask_caching import Cache
 import hashlib
 from dotenv import dotenv_values
 import redis
+import os
 
 config = dotenv_values(".env")
 
-redis_client = redis.Redis(host=config["REDIS_HOST"], port=config["REDIS_PORT"], db=0)
+redis_client = redis.Redis(host=os.environ["REDIS_HOST"], port=int(os.environ["REDIS_PORT"]), db=0)
 if redis_client.ping() is not True:
     exit(1)
 
@@ -14,8 +15,8 @@ app = Flask(__name__)
 app.config.from_mapping(config)
 cache = Cache(app)
 
-base_url = config["BASE_URL"]
-base_port = config["BASE_PORT"]
+base_url = os.environ["BASE_URL"]
+base_port = os.environ["BASE_PORT"]
 
 hash_encoder = hashlib.md5()
 
