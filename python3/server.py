@@ -7,12 +7,15 @@ import redis
 config = dotenv_values(".env")
 
 redis_client = redis.Redis(host=config["REDIS_HOST"], port=config["REDIS_PORT"], db=0)
+if redis_client.ping() is not True:
+    exit(1)
 
 app = Flask(__name__)
 app.config.from_mapping(config)
 cache = Cache(app)
 
 base_url = config["BASE_URL"]
+base_port = config["BASE_PORT"]
 
 hash_encoder = hashlib.md5()
 
@@ -20,16 +23,12 @@ def generate_hash(url: str) -> str:
     hash_encoder.update(bytes(url, 'utf-8'))
     return hash_encoder.hexdigest()
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
 @app.route("/generate", methods=["GET"])
 def generate_url():
     origin_url = str(request.query_string).split("=")[1][:-1]
     hash_url = generate_hash(origin_url)
     redis_client.set(hash_url, origin_url)
-    return "http://" + base_url + "/go?url=" + hash_url
+    return base_url + ":" + base_port + "/go?url=" + hash_url
 
 @app.route("/go", methods=["GET"])
 def go():
