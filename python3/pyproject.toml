@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "short-url-service"
+version = "0.1"
+description = "Short URL service"
+authors = ["hegemonies <hegemonies@yandex.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+python-dotenv = "^0.19.2"
+Flask = "^2.0.2"
+Flask-Caching = "^1.10.1"
+redis = "^4.0.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
