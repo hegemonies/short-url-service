@@ -34,4 +34,6 @@ def generate_url():
 def go():
     hash_url = str(request.query_string).split("=")[1][:-1]
     origin_url = redis_client.get(hash_url).decode("utf-8")
+    if origin_url[:4] != "http":
+        origin_url += "https://"
     return redirect(origin_url, code=302)
