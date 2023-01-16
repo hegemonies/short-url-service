@@ -10,7 +10,7 @@ services:
       - short_url_service_network
 
   short_url_service:
-    image: pi41:5000/short-url-service:latest
+    image: short-url-service:latest
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379

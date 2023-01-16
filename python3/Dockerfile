@@ -1,15 +1,14 @@
-FROM python:3.9.9-slim-buster
+FROM python:3.11.1-slim-buster
 
 WORKDIR /app
 
 COPY ./ /app
 
 # Install poetry
-RUN apt update && \
-        apt install curl -y && \
-        curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+RUN apt update && apt install curl -y
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 # Install project
-RUN $HOME/.poetry/bin/poetry install
+RUN $HOME/.local/bin/poetry install
 
-CMD $HOME/.poetry/bin/poetry run flask run --host=0.0.0.0
+CMD $HOME/.local/bin/poetry run flask run --host=0.0.0.0
