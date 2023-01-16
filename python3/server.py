@@ -30,7 +30,13 @@ def generate_url():
     origin_url = str(request.query_string).split("=")[1][:-1]
     hash_url = generate_hash(origin_url)
     redis_client.set(hash_url, origin_url)
-    return base_url + f":{base_port}" if need_port else "" + "/go?url=" + hash_url
+    
+    new_url = base_url
+    if need_port:
+        new_url += f":{base_port}"
+    new_url += f"/go?url={hash_url}"
+
+    return new_url
 
 @app.route("/go", methods=["GET"])
 def go():
