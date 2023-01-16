@@ -17,6 +17,7 @@ cache = Cache(app)
 
 base_url = os.environ["BASE_URL"]
 base_port = os.environ["BASE_PORT"]
+need_port = bool(os.environ["NEED_PORT"])
 
 hash_encoder = hashlib.md5()
 
@@ -29,7 +30,7 @@ def generate_url():
     origin_url = str(request.query_string).split("=")[1][:-1]
     hash_url = generate_hash(origin_url)
     redis_client.set(hash_url, origin_url)
-    return base_url + ":" + base_port + "/go?url=" + hash_url
+    return base_url + f":{base_port}" if need_port else "" + "/go?url=" + hash_url
 
 @app.route("/go", methods=["GET"])
 def go():
