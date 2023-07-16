@@ -9,6 +9,8 @@ services:
 
   short_url_service:
     image: short-url-service:latest
+    container_name: short_url_service_python
+    restart: always
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379

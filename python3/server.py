@@ -1,5 +1,5 @@
 from datetime import timedelta
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, send_from_directory
 from flask_caching import Cache
 import hashlib
 from dotenv import dotenv_values
