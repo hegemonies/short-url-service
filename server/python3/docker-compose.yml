@@ -1,28 +1,14 @@
 services:
 
-  redis:
-    image: redis
-    ports:
-      - 6379:6379
-    networks:
-      - short_url_service_network
-
   short_url_service:
     image: short-url-service:latest
     container_name: short_url_service_python
     restart: always
     environment:
-      - REDIS_HOST=redis
+      - REDIS_HOST=localhost
       - REDIS_PORT=6379
-      - BASE_URL=http://localhost
+      - BASE_URL=http://localhost:4001
       - FLASK_RUN_PORT=4000
       - FLASK_ENV=production
     ports:
-      - 4000:4000
-    networks:
-      - short_url_service_network
-    depends_on:
-      - redis
-
-networks:
-  short_url_service_network:
+      - 4001:4000

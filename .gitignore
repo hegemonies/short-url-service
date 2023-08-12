@@ -1,2 +1,4 @@
-python3/__pycache__/
-python3/poetry.lock
+server/python3/__pycache__/
+server/python3/poetry.lock
+
+frontend/node_modules/
