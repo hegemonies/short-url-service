@@ -13,7 +13,7 @@ services:
       test: redis-cli ping || exit 1
 
   backend:
-    image: short-url-service:backend-latest
+    image: hegemonies/short-url-service:backend-latest
     container_name: short-url-service-backend
     restart: always
     environment:
@@ -28,7 +28,7 @@ services:
       - redis
 
   frontend:
-    image: short-url-service:frontend-latest
+    image: hegemonies/short-url-service:frontend-latest
     container_name: short-url-service-frontend
     restart: always
     environment:
