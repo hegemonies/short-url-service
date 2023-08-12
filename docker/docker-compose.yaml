@@ -1,0 +1,43 @@
+services:
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-volume:/data
+    mem_limit: 128m
+    healthcheck:
+      test: redis-cli ping || exit 1
+
+  backend:
+    image: short-url-service:backend-latest
+    container_name: short-url-service-backend
+    restart: always
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - BASE_URL=http://localhost:4001
+      - FLASK_RUN_PORT=4000
+      - FLASK_ENV=production
+    ports:
+      - 4001:4000
+    depends_on:
+      - redis
+
+  frontend:
+    image: short-url-service:frontend-latest
+    container_name: short-url-service-frontend
+    restart: always
+    environment:
+      # todo: does not work, need to fix it
+      - VITE_SERVER_ROOT_URL=http://localhost:4001
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  redis-volume:

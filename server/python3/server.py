@@ -44,7 +44,7 @@ def generate_url():
     hash_url = generate_hash(origin_url)
     key = hash_url
     redis_client.set(key, origin_url)
-    redis_client.expire(key, timedelta(minutes=1))
+    redis_client.expire(key, timedelta(days=7))
     return base_url + "/go?url=" + hash_url
 
 
