@@ -2,7 +2,7 @@ FROM node:20-alpine as build
 WORKDIR /app
 COPY ./ .
 RUN npm i
-RUN npm run build || true
+RUN npm run build-only
 
 FROM nginx:1-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
