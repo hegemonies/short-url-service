@@ -8,15 +8,16 @@ let isError = ref(false);
 let isLoading = ref(false);
 
 const generateURL = () => {
+  console.log("URL=" + import.meta.env.VITE_SERVER_ROOT_URL);
   isLoading.value = true;
   shortLink.value = '';
   axios
-    .get('http://192.168.10.136:4001/generate', {
+    .get(`${import.meta.env.VITE_SERVER_ROOT_URL}/generate`, {
       params: {
         url: longLink.value
       },
       Headers: {
-        'Access-Control-Allow-Origin': 'http://192.168.10.136:4001'
+        'Access-Control-Allow-Origin': import.meta.env.VITE_SERVER_ROOT_URL
       }
     })
     .then((response: { data: string }) => {
