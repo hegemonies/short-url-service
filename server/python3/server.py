@@ -32,6 +32,12 @@ def get_address_from_url(query_string: str) -> str:
     return urllib.parse.unquote(query_string).split("=")[1][:-1]
 
 
+@app.after_request
+def add_header(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
 @app.route("/generate", methods=["GET"])
 def generate_url():
     origin_url = get_address_from_url(request.query_string)
