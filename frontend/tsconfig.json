@@ -4,14 +4,14 @@
   "_version": "20.1.0",
 
   "compilerOptions": {
-    "lib": ["es2023"],
-    "module": "Node16",
-    "target": "es2022",
-
+    "composite": true,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "types": ["node"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node16"
+    "forceConsistentCasingInFileNames": true
   }
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import axios from 'axios';
+import { generateShortUrl } from '@/services/urlService';
 
 let shortLink = ref('');
 let longLink = ref('');
@@ -8,23 +8,17 @@ let isError = ref(false);
 let isLoading = ref(false);
 
 const generateURL = () => {
-  console.log("URL=" + import.meta.env.VITE_SERVER_ROOT_URL);
   isLoading.value = true;
   shortLink.value = '';
-  axios
-    .get(`${import.meta.env.VITE_SERVER_ROOT_URL}/generate`, {
-      params: {
-        url: longLink.value
-      },
-      Headers: {
-        'Access-Control-Allow-Origin': import.meta.env.VITE_SERVER_ROOT_URL
-      }
-    })
+  generateShortUrl(longLink.value)
     .then((response: { data: string }) => {
       isError.value = false;
       shortLink.value = response.data;
     })
-    .catch(() => isError.value = true)
+    .catch((error) => {
+      console.error(error);
+      isError.value = true
+    })
     .finally(() => isLoading.value = false)
 }
 </script>
@@ -35,7 +29,7 @@ const generateURL = () => {
       <label for="link" class="mb-2 text-sm font-medium text-gray-900 sr-only">Cut URL</label>
       <div class="relative">
         <input v-model="longLink" id="link" placeholder="Put your URL here!" class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" required>
-        <button @click="count++" :disabled="isLoading" class="enabled:hover:cursor-pointer disabled:opacity-25 h-9 text-blue-950 absolute right-2.5 bottom-2.5 bg-white enabled:hover:bg-teal-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4">{{ isLoading ? 'Loading...' : 'Cut URL!'}}</button>
+        <button :disabled="isLoading" class="enabled:hover:cursor-pointer disabled:opacity-25 h-9 text-blue-950 absolute right-2.5 bottom-2.5 bg-white enabled:hover:bg-teal-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4">{{ isLoading ? 'Loading...' : 'Cut URL!'}}</button>
       </div>
     </form>
     <div v-if="isLoading" role="status" class="text-center">
